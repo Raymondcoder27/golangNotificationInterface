@@ -1,4 +1,6 @@
 package main
 
-type account struct {
+type Account struct {
+	Username string
+	Password string
 }
