@@ -10,7 +10,7 @@ import (
 
 type Account struct {
 	Username string
-	Password string
+	Email    string
 }
 
 type AccountNotifier interface {
@@ -18,6 +18,10 @@ type AccountNotifier interface {
 }
 
 type SimpleAccountNotifier struct {
+}
+
+func (n SimpleAccountNotifier) NotifyAccountCreated(ctx context.Context, account Account) error {
+
 }
 
 type AccountHandler struct {
@@ -46,12 +50,16 @@ func handleCreateAccount(w http.ResponseWriter, r http.Request) {
 
 func notifyAccountCreated(account Account) error {
 	time.Sleep(time.Millisecond * 500)
-	slog.Info("New account created,", "username", account.Username, "email", account.email)
+	slog.Info("New account created,", "username", account.Username, "email", account.Email)
 	return nil
 }
 
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("POST /account", handleCreateAccount)
+
+	accountHandler := &AccountHandler{
+		AccountNotifier: SimpleAccountNotifier{},
+	}
+	mux.HandleFunc("POST /account", accountHandler.handleCreateAccount)
 	http.ListenAndServe(":3000", mux)
 }
