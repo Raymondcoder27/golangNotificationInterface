@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
+	"time"
 )
 
 type Account struct {
@@ -24,6 +25,16 @@ func handleCreateAccount(w http.ResponseWriter, r http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(account)
+}
+
+func handleCreateAccount() {
+
+}
+
+func notifyAccountCreated() error {
+	time.Sleep(time.Millisecond * 500)
+	slog.Info("New account created,", "username", account.Username, "email", account.email)
+	return nil
 }
 
 func main() {
