@@ -19,8 +19,11 @@ type AccountNotifier interface {
 type SimpleAccountNotifier struct {
 }
 
-func (n SimpleAccountNotifier) NotifyAccountCreated(ctx context.Context, account Account) error {
-	slog.Info("New account created", "username", account.Username, "account", account.Email)
+type BetterAccountNotifier struct {
+}
+
+func (n BetterAccountNotifier) NotifyAccountCreated(ctx context.Context, account Account) error {
+	slog.Info("New account created by the better account notifier", "username", account.Username, "account", account.Email)
 	return nil
 }
 
@@ -53,7 +56,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	accountHandler := &AccountHandler{
-		AccountNotifier: SimpleAccountNotifier{},
+		AccountNotifier: BetterAccountNotifier{},
 	}
 	mux.HandleFunc("POST /account", accountHandler.handleCreateAccount)
 	http.ListenAndServe(":3000", mux)
