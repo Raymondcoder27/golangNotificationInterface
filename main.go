@@ -21,14 +21,15 @@ type SimpleAccountNotifier struct {
 }
 
 func (n SimpleAccountNotifier) NotifyAccountCreated(ctx context.Context, account Account) error {
-
+	slog.Info("New account created", "username", account.Username, "account", account.Email)
+	return nil
 }
 
 type AccountHandler struct {
 	AccountNotifier AccountNotifier
 }
 
-func (h *AccountHandler) handleCreateAccount(w http.ResponseWriter, r http.Request) {
+func (h *AccountHandler) handleCreateAccount(w http.ResponseWriter, r *http.Request) {
 	var account Account
 	if err := json.NewDecoder(r.Body).Decode(&account); err != nil {
 		slog.Error("Failed to decode the response body", "err", err)
@@ -39,11 +40,6 @@ func (h *AccountHandler) handleCreateAccount(w http.ResponseWriter, r http.Reque
 		slog.Error("Failed to notify account created", "err", err)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(account)
-}
-
-func handleCreateAccount(w http.ResponseWriter, r http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(account)
 }
