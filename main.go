@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
-	"time"
 )
 
 type Account struct {
@@ -44,11 +43,11 @@ func (h *AccountHandler) handleCreateAccount(w http.ResponseWriter, r *http.Requ
 	json.NewEncoder(w).Encode(account)
 }
 
-func notifyAccountCreated(account Account) error {
-	time.Sleep(time.Millisecond * 500)
-	slog.Info("New account created,", "username", account.Username, "email", account.Email)
-	return nil
-}
+// func notifyAccountCreated(account Account) error {
+// 	time.Sleep(time.Millisecond * 500)
+// 	slog.Info("New account created,", "username", account.Username, "email", account.Email)
+// 	return nil
+// }
 
 func main() {
 	mux := http.NewServeMux()
