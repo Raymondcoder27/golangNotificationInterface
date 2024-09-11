@@ -16,14 +16,18 @@ type AccountNotifier interface {
 	NotifyAccountCreated(Account) error
 }
 
-func handleCreateAccount(w http.ResponseWriter, r http.Request) {
+type AccountHandler struct {
+	AccountNotifier AccountNotifier
+}
+
+func (h *AccountHandler) handleCreateAccount(w http.ResponseWriter, r http.Request) {
 	var account Account
 	if err := json.NewDecoder(r.Body).Decode(&account); err != nil {
 		slog.Error("Failed to decode the response body", "err", err)
 		return
 	}
 
-	if err := notifyAccountCreated(account); err != nil {
+	if err := h.AccountNotifier.NotifyAccountCreated(r.Context(), account); err != nil {
 		slog.Error("Failed to notify account created", "err", err)
 		return
 	}
