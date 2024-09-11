@@ -27,8 +27,8 @@ func handleCreateAccount(w http.ResponseWriter, r http.Request) {
 	json.NewEncoder(w).Encode(account)
 }
 
-func handleCreateAccount() {
-
+func handleCreateAccount(w http.ResponseWriter, r http.Request) {
+	w.Header().Set
 }
 
 func notifyAccountCreated() error {
