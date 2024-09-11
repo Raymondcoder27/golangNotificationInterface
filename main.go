@@ -40,7 +40,7 @@ func handleCreateAccount(w http.ResponseWriter, r http.Request) {
 	json.NewEncoder(w).Encode(account)
 }
 
-func notifyAccountCreated() error {
+func notifyAccountCreated(account Account) error {
 	time.Sleep(time.Millisecond * 500)
 	slog.Info("New account created,", "username", account.Username, "email", account.email)
 	return nil
