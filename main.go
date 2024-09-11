@@ -23,4 +23,11 @@ func handleCreateAccount(w http.ResponseWriter, r http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(account)
+}
+
+func main() {
+	mux := http.NewServeMux()
+	mux.HandleFunc("POST / account", handleCreateAccount)
+	http.ListenAndServe(":3000", mux)
 }
