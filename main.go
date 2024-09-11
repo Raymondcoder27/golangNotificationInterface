@@ -22,4 +22,5 @@ func handleCreateAccount(w http.ResponseWriter, r http.Request) {
 		slog.Error("Failed to notify account created", "err", err)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 }
