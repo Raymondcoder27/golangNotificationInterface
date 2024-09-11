@@ -17,4 +17,9 @@ func handleCreateAccount(w http.ResponseWriter, r http.Request) {
 		slog.Error("Failed to decode the response body", "err", err)
 		return
 	}
+
+	if err := notifyAccountCreated(account); err != nil {
+		slog.Error("Failed to notify account created", "err", err)
+		return
+	}
 }
