@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"log/slog"
 	"net/http"
@@ -13,7 +14,10 @@ type Account struct {
 }
 
 type AccountNotifier interface {
-	NotifyAccountCreated(Account) error
+	NotifyAccountCreated(context.Context, Account) error
+}
+
+type SimpleAccountNotifier struct {
 }
 
 type AccountHandler struct {
@@ -48,6 +52,6 @@ func notifyAccountCreated(account Account) error {
 
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("POST / account", handleCreateAccount)
+	mux.HandleFunc("POST /account", handleCreateAccount)
 	http.ListenAndServe(":3000", mux)
 }
